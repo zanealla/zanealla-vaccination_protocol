@@ -1,0 +1,278 @@
+{
+  "protocols": {
+    "default": {
+      "name": "Protocole par défaut",
+      "description": "Protocole de vaccination standard pour poules pondeuses",
+      "hatchDate": "2025-11-15",
+      "vaccines": [
+        {
+          "id": 1,
+          "age": 1,
+          "name": "HVT ND IBD + RESPENSE + MA5CLON30",
+          "method": "Injection SC",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-09-07"
+        },
+        {
+          "id": 2,
+          "age": 7,
+          "name": "H9 ND",
+          "method": "Injection SC",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-09-13"
+        },
+        {
+          "id": 3,
+          "age": 14,
+          "name": "AVINEW + H120",
+          "method": "Spray",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-09-20"
+        },
+        {
+          "id": 4,
+          "age": 21,
+          "name": "IBD",
+          "method": "Eau de boisson",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-09-27"
+        },
+        {
+          "id": 5,
+          "age": 28,
+          "name": "MA5COLNE30",
+          "method": "Spray",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-10-04"
+        },
+        {
+          "id": 6,
+          "age": 42,
+          "name": "H5ND",
+          "method": "Injection IM",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-10-18"
+        },
+        {
+          "id": 7,
+          "age": 56,
+          "name": "NEMOVAC",
+          "method": "Spray",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-11-02"
+        },
+        {
+          "id": 8,
+          "age": 70,
+          "name": "Variole Aviaire + ND IB EDS",
+          "method": "Aile piquage",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-11-16"
+        },
+        {
+          "id": 9,
+          "age": 77,
+          "name": "H120 + AVINEW ",
+          "method": "Spray",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2025-11-20"
+        },
+        {
+          "id": 10,
+          "age": 92,
+          "name": "H5ND",
+          "method": "Injection IM",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2025-12-05"
+        },
+        {
+          "id": 1762104198537,
+          "age": 100,
+          "name": "ENCEFAL VAC",
+          "method": "Eau de boisson",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2025-12-12"
+        },
+        {
+          "id": 1762104223666,
+          "age": 122,
+          "name": "H9 + MEGAMUNE",
+          "method": "Injection IM",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2026-01-03"
+        }
+      ],
+      "farmName": "SARL Ryadh Elnadjah",
+      "doctorName": "DR. Z. ALAA EDDINE"
+    },
+    "protocol_1763221468516": {
+      "name": "07/09/2025",
+      "description": "",
+      "hatchDate": "2025-09-07",
+      "vaccines": [
+        {
+          "id": 1,
+          "age": 1,
+          "name": "HVT ND IBD + RESPENSE + MA5CLON30",
+          "method": "Injection SC",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-09-07"
+        },
+        {
+          "id": 2,
+          "age": 7,
+          "name": "H9 ND",
+          "method": "Injection SC",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-09-13"
+        },
+        {
+          "id": 3,
+          "age": 14,
+          "name": "AVINEW + H120",
+          "method": "Spray",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-09-20"
+        },
+        {
+          "id": 4,
+          "age": 21,
+          "name": "IBD",
+          "method": "Eau de boisson",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-09-27"
+        },
+        {
+          "id": 5,
+          "age": 28,
+          "name": "MA5COLNE30",
+          "method": "Spray",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-10-04"
+        },
+        {
+          "id": 6,
+          "age": 42,
+          "name": "H5ND",
+          "method": "Injection IM",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-10-18"
+        },
+        {
+          "id": 7,
+          "age": 56,
+          "name": "NEMOVAC",
+          "method": "Spray",
+          "notes": "",
+          "image": "",
+          "completed": true,
+          "customDate": "2025-11-02"
+        },
+        {
+          "id": 8,
+          "age": 63,
+          "name": "Variole Aviaire + ND IB EDS",
+          "method": "Aile piquage",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2025-11-09"
+        },
+        {
+          "id": 9,
+          "age": 77,
+          "name": "H120 + AVINEW ",
+          "method": "Spray",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2025-11-20"
+        },
+        {
+          "id": 10,
+          "age": 85,
+          "name": "H5ND",
+          "method": "Injection IM",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2025-11-28"
+        },
+        {
+          "id": 1762104198537,
+          "age": 100,
+          "name": "ENCEFAL VAC",
+          "method": "Eau de boisson",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2025-12-12"
+        },
+        {
+          "id": 1762104223666,
+          "age": 115,
+          "name": "H9 + MEGAMUNE",
+          "method": "Injection IM",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2025-12-27"
+        }
+      ]
+    },
+    "protocol_1763221535451": {
+      "name": "15/11/2025",
+      "description": "",
+      "hatchDate": "2025-11-15",
+      "vaccines": [
+        {
+          "id": 1763226040615,
+          "age": 10,
+          "name": "HVT ND IBD + RESPENSE + MA5CLON30",
+          "method": "Injection SC",
+          "notes": "",
+          "image": "",
+          "completed": false,
+          "customDate": "2025-12-18"
+        }
+      ]
+    }
+  },
+  "currentProtocol": "default"
+}

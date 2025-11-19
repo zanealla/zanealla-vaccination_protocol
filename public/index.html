@@ -3,10 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Protocole de Vaccination Poules Pondeuses</title>
     <style>
+	/* Add these styles to your existing CSS */
+
+.protocol-info {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 25px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 10px;
+  border-left: 5px solid #667eea;
+  flex-wrap: wrap;
+}
+
+body.dark-mode .protocol-info {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  border-left: 5px solid #3498db;
+}
+
+.protocol-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.protocol-info-item strong {
+  color: #667eea;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+body.dark-mode .protocol-info-item strong {
+  color: #3498db;
+}
+
+.protocol-info-item span {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+body.dark-mode .protocol-info-item span {
+  color: #ecf0f1;
+}
+
+/* Hide search container in PDF */
+.pdf-export .search-container {
+  display: none !important;
+}
+
+@media print {
+    .search-container,
+    .action-buttons,
+    .vaccine-table th:last-child,
+    .vaccine-table td:last-child {
+        display: none !important;
+    }
+    
+    .protocol-info {
+        background: #f8f9fa !important;
+        border-left: 5px solid #667eea !important;
+        color: #333 !important;
+    }
+    
+    .protocol-info-item strong {
+        color: #667eea !important;
+    }
+    
+    .protocol-info-item span {
+        color: #333 !important;
+    }
+}
+        /* Styles existants inchangés */
         * {
             margin: 0;
             padding: 0;
@@ -1093,6 +1167,118 @@
             color: #ffc107;
         }
 
+        /* Styles pour la gestion des protocoles */
+        .protocol-management {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .protocol-management {
+            background: #34495e;
+        }
+
+        .protocol-selector {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .protocol-selector select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .protocol-selector select {
+            background: #2c3e50;
+            border: 2px solid #7f8c8d;
+            color: #ecf0f1;
+        }
+
+        .protocol-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .protocol-list {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .protocol-list.active {
+            display: block;
+        }
+
+        .protocol-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .protocol-item {
+            border-bottom: 1px solid #7f8c8d;
+        }
+
+        .protocol-item:hover {
+            background: #f8f9fa;
+        }
+
+        body.dark-mode .protocol-item:hover {
+            background: #2c3e50;
+        }
+
+        .protocol-item:last-child {
+            border-bottom: none;
+        }
+
+        .protocol-item-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .protocol-item-info {
+            font-size: 14px;
+            color: #666;
+        }
+
+        body.dark-mode .protocol-item-info {
+            color: #bdc3c7;
+        }
+
+        .protocol-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .current-protocol-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #4CAF50;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -1138,6 +1324,15 @@
             .search-container {
                 flex-direction: column;
             }
+
+            .protocol-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .protocol-actions {
+                justify-content: center;
+            }
         }
 
         @media print {
@@ -1145,7 +1340,7 @@
                 background: white;
                 padding: 0;
             }
-            .toolbar, .stats-bar, .form-section, .toggle-completed, .search-container {
+            .toolbar, .stats-bar, .form-section, .toggle-completed, .search-container, .protocol-management {
                 display: none !important;
             }
         }
@@ -1179,6 +1374,28 @@
             <button class="btn btn-small btn-primary" onclick="showPasswordModal()" style="margin-left: 10px;">Déverrouiller</button>
         </div>
 
+        <!-- Gestion des protocoles -->
+        <div class="protocol-management">
+            <h2 class="section-title">📋 Gestion des Protocoles</h2>
+            
+            <div class="protocol-selector">
+                <select id="protocolSelect" onchange="switchProtocol()">
+                    <!-- Les options seront générées dynamiquement -->
+                </select>
+                
+                <div class="protocol-actions">
+                    <button class="btn btn-primary" onclick="openProtocolModal()">➕ Nouveau Protocole</button>
+                    <button class="btn btn-info" onclick="toggleProtocolList()">📂 Gérer les Protocoles</button>
+                    <button class="btn btn-success" onclick="exportCurrentProtocol()">📥 Exporter Protocole</button>
+                    <button class="btn btn-warning" onclick="openImportModal()">📤 Importer Protocole</button>
+                </div>
+            </div>
+            
+            <div class="protocol-list" id="protocolList">
+                <!-- La liste des protocoles sera générée dynamiquement -->
+            </div>
+        </div>
+
         <div class="toolbar">
             <div>
                 <button class="btn btn-primary" onclick="openAddModal()" id="addBtn">➕ Ajouter Vaccin</button>
@@ -1190,7 +1407,6 @@
                 <button class="btn btn-success" onclick="exportToPDF()">📥 Exporter PDF</button>
                 <button class="btn btn-success" onclick="printProtocol()">🖨️ Imprimer</button>
                 <button class="btn btn-primary" onclick="saveProtocol()" id="saveBtn">💾 Sauvegarder</button>
-                <button class="btn btn-primary" onclick="loadProtocol()" id="loadBtn">📂 Charger</button>
             </div>
         </div>
 
@@ -1222,8 +1438,18 @@
         </div>
 
         <div class="protocol-container">
-            <h2 class="section-title">📅 Calendrier Vaccinal</h2>
-            
+            <h2 class="section-title">📅 Calendrier Vaccinal - <span id="currentProtocolName">Protocole par défaut</span></h2>
+            <div class="protocol-info" id="protocolInfo">
+  <div class="protocol-info-item">
+    <strong>🏠 Ferme:</strong> <span id="protocolFarmName">-</span>
+  </div>
+  <div class="protocol-info-item">
+    <strong>👨‍⚕️ Vétérinaire:</strong> <span id="protocolDoctorName">-</span>
+  </div>
+  <div class="protocol-info-item">
+    <strong>📅 Date d'éclosion:</strong> <span id="protocolHatchDateDisplay">-</span>
+  </div>
+</div>
             <div class="search-container">
                 <div class="search-box">
                     <span class="search-icon">🔍</span>
@@ -1273,7 +1499,7 @@
         </div>
     </div>
 
-    <!-- Modal Add/Edit -->
+    <!-- Modal Add/Edit Vaccine -->
     <div class="modal" id="vaccineModal">
         <div class="modal-content">
             <div class="modal-header" id="modalTitle">Ajouter un Vaccin</div>
@@ -1327,6 +1553,80 @@
         </div>
     </div>
 
+    <!-- Modal Gestion des Protocoles -->
+    <div class="modal" id="protocolModal">
+        <div class="modal-content">
+            <div class="modal-header" id="protocolModalTitle">Nouveau Protocole</div>
+            <form id="protocolForm">
+                <div class="form-group">
+                    <label>Nom du protocole <span style="color: red;">*</span></label>
+                    <input type="text" id="protocolName" required placeholder="Ex: Protocole Standard">
+                    <small style="color: #666; font-size: 12px;">Le nom doit être unique</small>
+                </div>
+				<div class="form-group">
+                    <label>Nom de la Ferme</label>
+                    <input type="text" id="protocolFarmNameInput" placeholder="Ex: Ferme Avicole du Soleil">
+                </div>
+                <div class="form-group">
+                   <label>Nom du Vétérinaire</label>
+                   <input type="text" id="protocolDoctorNameInput" placeholder="Ex: Dr. Martin">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="protocolDescription" rows="3" placeholder="Description du protocole..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Date d'éclosion</label>
+                    <input type="date" id="protocolHatchDate">
+                    <small style="color: #666; font-size: 12px;">Laisser vide pour utiliser la date actuelle</small>
+                </div>
+                <div class="form-group">
+                    <label>Options</label>
+                    <div>
+                        <input type="checkbox" id="duplicateCurrent" onchange="toggleTemplateSelection()">
+                        <label for="duplicateCurrent">Dupliquer le protocole actuel</label>
+                    </div>
+                    <div id="templateSelection" style="display: none; margin-top: 10px;">
+                        <label>Modèle à utiliser:</label>
+                        <select id="protocolTemplate">
+                            <!-- Les options seront générées dynamiquement -->
+                        </select>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" class="btn btn-success" style="flex: 1;">💾 Créer le Protocole</button>
+                    <button type="button" class="btn btn-danger" onclick="closeProtocolModal()">❌ Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Importation de Protocole -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <div class="modal-header">Importer un Protocole</div>
+            <div class="form-group">
+                <label>Sélectionner un fichier JSON</label>
+                <div class="file-upload">
+                    <input type="file" id="importFile" accept=".json" class="file-upload-input">
+                    <label for="importFile" class="file-upload-label">
+                        <span>📁 Choisir un fichier JSON</span>
+                        <small style="color: #666;">Glissez-déposez ou cliquez pour sélectionner</small>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nom du protocole (optionnel)</label>
+                <input type="text" id="importProtocolName" placeholder="Ex: Protocole Importé">
+                <small style="color: #666; font-size: 12px;">Laisser vide pour utiliser le nom du fichier</small>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 25px;">
+                <button class="btn btn-success" style="flex: 1;" onclick="importProtocol()">📤 Importer</button>
+                <button class="btn btn-danger" onclick="closeImportModal()">❌ Annuler</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Image Modal -->
     <div class="image-modal" id="imageModal">
         <span class="close-btn" onclick="closeImageModal()">&times;</span>
@@ -1335,957 +1635,1544 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script>
-        // Variables globales
-        let vaccines = [];
-        let editingId = null;
-        let currentSort = { field: 'age', direction: 'asc' };
-        let searchTerm = '';
-        let statusFilter = 'all';
-        let isDarkMode = localStorage.getItem('darkMode') === 'true';
-        let hatchDate = localStorage.getItem('hatchDate') || new Date().toISOString().split('T')[0];
-        let isUnlocked = false;
-        let isViewMode = false;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+    // Variables globales
+    let protocols = {};
+    let currentProtocol = "default";
+    let vaccines = [];
+    let editingId = null;
+    let currentSort = { field: 'age', direction: 'asc' };
+    let searchTerm = '';
+    let statusFilter = 'all';
+    let isDarkMode = localStorage.getItem('darkMode') === 'true';
+    let hatchDate = new Date().toISOString().split('T')[0];
+    let isUnlocked = false;
+    let isViewMode = false;
 
-        // Mot de passe (vous pouvez le changer)
-        const PASSWORD = "admin123";
+    // Mot de passe (vous pouvez le changer)
+    const PASSWORD = "admin123";
 
-        // Fonction pour charger automatiquement le dernier protocole sauvegardé
-        function autoLoadLastProtocol() {
-            const stored = localStorage.getItem('vaccinationProtocol');
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    vaccines = parsed.map(vaccine => ({
-                        ...vaccine,
-                        customDate: vaccine.customDate || ""
-                    }));
-                    return true;
-                } catch (e) {
-                    console.error('Erreur lors du chargement automatique:', e);
-                    return false;
-                }
+function updateProtocolInfoDisplay() {
+    const protocol = protocols[currentProtocol];
+    document.getElementById('protocolFarmName').textContent = protocol.farmName || '-';
+    document.getElementById('protocolDoctorName').textContent = protocol.doctorName || '-';
+    document.getElementById('protocolHatchDateDisplay').textContent = formatDateForDisplay(protocol.hatchDate);
+}
+
+    // Initialisation des données par défaut
+   function initializeDefaultData() {
+    protocols = {
+        "default": {
+            name: "Protocole par défaut",
+            description: "Protocole de vaccination standard pour poules pondeuses",
+            farmName: "Ma Ferme",
+            doctorName: "Dr. Veterinaire",
+            hatchDate: new Date().toISOString().split('T')[0],
+                vaccines: [
+                    {
+                        "id": 1,
+                        "age": 1,
+                        "name": "HVT ND IBD + RESPENSE + MA5CLON30",
+                        "method": "Injection SC",
+                        "notes": "",
+                        "image": "",
+                        "completed": true,
+                        "customDate": "2025-09-07"
+                    },
+                    {
+                        "id": 2,
+                        "age": 7,
+                        "name": "H9 ND",
+                        "method": "Injection SC",
+                        "notes": "",
+                        "image": "",
+                        "completed": true,
+                        "customDate": "2025-09-13"
+                    },
+                    {
+                        "id": 3,
+                        "age": 14,
+                        "name": "AVINEW + H120",
+                        "method": "Spray",
+                        "notes": "",
+                        "image": "",
+                        "completed": true,
+                        "customDate": "2025-09-20"
+                    },
+                    {
+                        "id": 4,
+                        "age": 21,
+                        "name": "IBD",
+                        "method": "Eau de boisson",
+                        "notes": "",
+                        "image": "",
+                        "completed": true,
+                        "customDate": "2025-09-27"
+                    },
+                    {
+                        "id": 5,
+                        "age": 28,
+                        "name": "MA5COLNE30",
+                        "method": "Spray",
+                        "notes": "",
+                        "image": "",
+                        "completed": true,
+                        "customDate": "2025-10-04"
+                    },
+                    {
+                        "id": 6,
+                        "age": 42,
+                        "name": "H5ND",
+                        "method": "Injection IM",
+                        "notes": "",
+                        "image": "",
+                        "completed": true,
+                        "customDate": "2025-10-18"
+                    },
+                    {
+                        "id": 7,
+                        "age": 56,
+                        "name": "NEMOVAC",
+                        "method": "Spray",
+                        "notes": "",
+                        "image": "",
+                        "completed": true,
+                        "customDate": "2025-11-02"
+                    },
+                    {
+                        "id": 8,
+                        "age": 63,
+                        "name": "Variole Aviaire + ND IB EDS",
+                        "method": "Aile piquage",
+                        "notes": "",
+                        "image": "",
+                        "completed": false,
+                        "customDate": "2025-11-09"
+                    },
+                    {
+                        "id": 9,
+                        "age": 77,
+                        "name": "H120 + AVINEW ",
+                        "method": "Spray",
+                        "notes": "",
+                        "image": "",
+                        "completed": false,
+                        "customDate": "2025-11-20"
+                    },
+                    {
+                        "id": 10,
+                        "age": 85,
+                        "name": "H5ND",
+                        "method": "Injection IM",
+                        "notes": "",
+                        "image": "",
+                        "completed": false,
+                        "customDate": "2025-11-28"
+                    },
+                    {
+                        "id": 1762104198537,
+                        "age": 100,
+                        "name": "ENCEFAL VAC",
+                        "method": "Eau de boisson",
+                        "notes": "",
+                        "image": "",
+                        "completed": false,
+                        "customDate": "2025-12-12"
+                    },
+                    {
+                        "id": 1762104223666,
+                        "age": 115,
+                        "name": "H9 + MEGAMUNE",
+                        "method": "Injection IM",
+                        "notes": "",
+                        "image": "",
+                        "completed": false,
+                        "customDate": "2025-12-27"
+                    }
+                ]
             }
+        };
+        
+        currentProtocol = "default";
+        vaccines = protocols["default"].vaccines;
+        hatchDate = protocols["default"].hatchDate;
+    }
+
+    // ==================== SERVER COMMUNICATION FUNCTIONS ====================
+
+    async function saveToServer() {
+        if (!isUnlocked) return;
+        
+        try {
+            const data = {
+                protocols: protocols,
+                currentProtocol: currentProtocol
+            };
+            
+            const response = await fetch('/api/protocols', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to save protocols');
+            }
+            
+            showAlert('💾 Protocole sauvegardé sur le serveur');
+        } catch (err) {
+            console.error('Error saving to server:', err);
+            showAlert('❌ Erreur lors de la sauvegarde sur le serveur', 'error');
+        }
+    }
+
+    async function loadFromServer() {
+        try {
+            const response = await fetch('/api/protocols');
+            
+            if (!response.ok) {
+                throw new Error('Failed to load protocols');
+            }
+            
+            const data = await response.json();
+            protocols = data.protocols;
+            currentProtocol = data.currentProtocol;
+            vaccines = protocols[currentProtocol].vaccines;
+            hatchDate = protocols[currentProtocol].hatchDate;
+            
+            return true;
+        } catch (err) {
+            console.error('Error loading from server:', err);
             return false;
         }
+    }
 
-        // Initialisation des données par défaut
-        function initializeDefaultData() {
-            vaccines = [
-                {
-    "id": 1,
-    "age": 1,
-    "name": "HVT ND IBD + RESPENSE + MA5CLON30",
-    "method": "Injection SC",
-    "notes": "",
-    "image": "",
-    "completed": true,
-    "customDate": "2025-09-07"
-  },
-  {
-    "id": 2,
-    "age": 7,
-    "name": "H9 ND",
-    "method": "Injection SC",
-    "notes": "",
-    "image": "",
-    "completed": true,
-    "customDate": "2025-09-13"
-  },
-  {
-    "id": 3,
-    "age": 14,
-    "name": "AVINEW + H120",
-    "method": "Spray",
-    "notes": "",
-    "image": "",
-    "completed": true,
-    "customDate": "2025-09-20"
-  },
-  {
-    "id": 4,
-    "age": 21,
-    "name": "IBD",
-    "method": "Eau de boisson",
-    "notes": "",
-    "image": "",
-    "completed": true,
-    "customDate": "2025-09-27"
-  },
-  {
-    "id": 5,
-    "age": 28,
-    "name": "MA5COLNE30",
-    "method": "Spray",
-    "notes": "",
-    "image": "",
-    "completed": true,
-    "customDate": "2025-10-04"
-  },
-  {
-    "id": 6,
-    "age": 42,
-    "name": "H5ND",
-    "method": "Injection IM",
-    "notes": "",
-    "image": "",
-    "completed": true,
-    "customDate": "2025-10-18"
-  },
-  {
-    "id": 7,
-    "age": 56,
-    "name": "NEMOVAC",
-    "method": "Spray",
-    "notes": "",
-    "image": "",
-    "completed": true,
-    "customDate": "2025-11-02"
-  },
-  {
-    "id": 8,
-    "age": 63,
-    "name": "Variole Aviaire + ND IB EDS",
-    "method": "Aile piquage",
-    "notes": "",
-    "image": "",
-    "completed": false,
-    "customDate": "2025-11-09"
-  },
-  {
-    "id": 9,
-    "age": 77,
-    "name": "H120 + AVINEW ",
-    "method": "Spray",
-    "notes": "",
-    "image": "",
-    "completed": false,
-    "customDate": "2025-11-20"
-  },
-  {
-    "id": 10,
-    "age": 85,
-    "name": "H5ND",
-    "method": "Injection IM",
-    "notes": "",
-    "image": "",
-    "completed": false,
-    "customDate": "2025-11-28"
-  },
-  {
-    "id": 1762104198537,
-    "age": 100,
-    "name": "ENCEFAL VAC",
-    "method": "Eau de boisson",
-    "notes": "",
-    "image": "",
-    "completed": false,
-    "customDate": "2025-12-12"
-  },
-  {
-    "id": 1762104223666,
-    "age": 115,
-    "name": "H9 + MEGAMUNE",
-    "method": "Injection IM",
-    "notes": "",
-    "image": "",
-    "completed": false,
-    "customDate": "2025-12-27"
-  }
-            ];
-        }
-
-        // Fonctions de sécurité
-        function checkPassword() {
-            const passwordInput = document.getElementById('passwordInput');
-            const passwordError = document.getElementById('passwordError');
+    async function exportProtocolToServer(protocolId) {
+        if (!isUnlocked) return;
+        
+        try {
+            const response = await fetch(`/api/protocol/export/${protocolId}`);
             
-            if (passwordInput.value === PASSWORD) {
-                isUnlocked = true;
-                isViewMode = false;
-                document.getElementById('passwordProtection').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'block';
-                document.getElementById('viewOnlyNotice').style.display = 'none';
-                enableEditing();
-                showAlert('🔓 Application déverrouillée', 'success');
-            } else {
-                passwordError.style.display = 'block';
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        }
-
-        function enterViewMode() {
-            // Recharger les données depuis le localStorage pour être à jour
-            if (!autoLoadLastProtocol()) {
-                // Si aucun protocole sauvegardé, initialiser avec les données par défaut
-                initializeDefaultData();
+            if (!response.ok) {
+                throw new Error('Failed to export protocol');
             }
             
-            isUnlocked = false;
-            isViewMode = true;
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            
+            // Get filename from Content-Disposition header or use default
+            const contentDisposition = response.headers.get('Content-Disposition');
+            let filename = `protocol_${protocolId}.json`;
+            
+            if (contentDisposition) {
+                const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+                if (filenameMatch) {
+                    filename = filenameMatch[1];
+                }
+            }
+            
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            
+            showAlert(`Protocole "${protocols[protocolId].name}" exporté`);
+        } catch (err) {
+            console.error('Error exporting protocol:', err);
+            showAlert('❌ Erreur lors de l\'exportation du protocole', 'error');
+        }
+    }
+
+    async function importProtocolFromServer(protocolData, protocolName) {
+        if (!isUnlocked) return;
+        
+        try {
+            const response = await fetch('/api/protocol/import', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    protocol: protocolData,
+                    name: protocolName
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to import protocol');
+            }
+            
+            const result = await response.json();
+            
+            // Reload protocols from server to get the new protocol
+            await loadFromServer();
+            
+            // Switch to the imported protocol
+            currentProtocol = result.protocolId;
+            vaccines = protocols[currentProtocol].vaccines;
+            
+            renderTimeline();
+            updateProtocolSelector();
+            showAlert(`Protocole "${protocols[result.protocolId].name}" importé avec succès`);
+            
+            return result.protocolId;
+        } catch (err) {
+            console.error('Error importing protocol:', err);
+            showAlert('❌ Erreur lors de l\'importation du protocole', 'error');
+            return null;
+        }
+    }
+
+    // ==================== SECURITY FUNCTIONS ====================
+
+    function checkPassword() {
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordError = document.getElementById('passwordError');
+        
+        if (passwordInput.value === PASSWORD) {
+            isUnlocked = true;
+            isViewMode = false;
             document.getElementById('passwordProtection').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
-            document.getElementById('viewOnlyNotice').style.display = 'block';
-            disableEditing();
-            // Rendre à nouveau la timeline avec les données fraîches
-            renderTimeline();
-            showAlert('👁️ Mode consultation activé - Dernier protocole chargé', 'warning');
+            document.getElementById('viewOnlyNotice').style.display = 'none';
+            enableEditing();
+            showAlert('🔓 Application déverrouillée', 'success');
+        } else {
+            passwordError.style.display = 'block';
+            passwordInput.value = '';
+            passwordInput.focus();
         }
+    }
 
-        function showPasswordModal() {
-            document.getElementById('passwordProtection').style.display = 'flex';
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('passwordError').style.display = 'none';
+    async function enterViewMode() {
+        // Recharger les données depuis le serveur
+        if (!await loadFromServer()) {
+            // Si aucun protocole sauvegardé, initialiser avec les données par défaut
+            initializeDefaultData();
+            await saveToServer(); // Save default data to server
         }
+        
+        isUnlocked = false;
+        isViewMode = true;
+        document.getElementById('passwordProtection').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        document.getElementById('viewOnlyNotice').style.display = 'block';
+        disableEditing();
+        renderTimeline();
+        updateProtocolSelector();
+        showAlert('👁️ Mode consultation activé - Dernier protocole chargé', 'warning');
+    }
 
-        function lockApp() {
-            isUnlocked = false;
-            isViewMode = false;
-            document.getElementById('passwordProtection').style.display = 'flex';
-            document.getElementById('mainContent').style.display = 'none';
-            disableEditing();
-            showAlert('🔒 Application verrouillée', 'info');
-        }
+    function showPasswordModal() {
+        document.getElementById('passwordProtection').style.display = 'flex';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordError').style.display = 'none';
+    }
 
-        function enableEditing() {
-            // Activer tous les boutons d'édition
-            document.getElementById('addBtn').disabled = false;
-            document.getElementById('resetBtn').disabled = false;
-            document.getElementById('saveBtn').disabled = false;
-            document.getElementById('loadBtn').disabled = false;
-            
-            // Activer les champs de recherche et filtre
-            document.getElementById('searchInput').disabled = false;
-            document.getElementById('statusFilter').disabled = false;
-            document.getElementById('sortSelect').disabled = false;
-            
-            // Rendre les cellules de date cliquables
-            document.querySelectorAll('.date-cell').forEach(cell => {
-                cell.style.cursor = 'pointer';
-                cell.onclick = function() {
-                    if (isUnlocked) {
-                        makeDateEditable(this);
-                    }
-                };
-            });
-            
-            // Activer les boutons d'action dans le tableau
-            document.querySelectorAll('.action-buttons button').forEach(button => {
-                button.disabled = false;
-            });
-        }
+    function lockApp() {
+        isUnlocked = false;
+        isViewMode = false;
+        document.getElementById('passwordProtection').style.display = 'flex';
+        document.getElementById('mainContent').style.display = 'none';
+        disableEditing();
+        showAlert('🔒 Application verrouillée', 'info');
+    }
 
-        function disableEditing() {
-            // Désactiver tous les boutons d'édition
-            document.getElementById('addBtn').disabled = true;
-            document.getElementById('resetBtn').disabled = true;
-            document.getElementById('saveBtn').disabled = true;
-            document.getElementById('loadBtn').disabled = true;
-            
-            // Désactiver les champs de recherche et filtre
-            document.getElementById('searchInput').disabled = true;
-            document.getElementById('statusFilter').disabled = true;
-            document.getElementById('sortSelect').disabled = true;
-            
-            // Rendre les cellules de date non cliquables
-            document.querySelectorAll('.date-cell').forEach(cell => {
-                cell.style.cursor = 'default';
-                cell.onclick = null;
-            });
-            
-            // Désactiver les boutons d'action dans le tableau
-            document.querySelectorAll('.action-buttons button').forEach(button => {
-                button.disabled = true;
-            });
-        }
+    function enableEditing() {
+        document.getElementById('addBtn').disabled = false;
+        document.getElementById('resetBtn').disabled = false;
+        document.getElementById('saveBtn').disabled = false;
+        
+        document.getElementById('searchInput').disabled = false;
+        document.getElementById('statusFilter').disabled = false;
+        document.getElementById('sortSelect').disabled = false;
+        
+        document.querySelectorAll('.date-cell').forEach(cell => {
+            cell.style.cursor = 'pointer';
+            cell.onclick = function() {
+                if (isUnlocked) {
+                    makeDateEditable(this);
+                }
+            };
+        });
+        
+        document.querySelectorAll('.action-buttons button').forEach(button => {
+            button.disabled = false;
+        });
+    }
 
-        // Fonctions d'alerte améliorées
-        function showAlert(message, type = 'success') {
-            if (!isUnlocked && !isViewMode) return;
-            
-            const alertBox = document.getElementById('alertBox');
-            const alertMessage = document.getElementById('alertMessage');
-            alertMessage.textContent = message;
-            
-            // Définir le type d'alerte
-            alertBox.className = 'alert';
-            if (type === 'error') {
-                alertBox.classList.add('alert-error');
-            } else if (type === 'warning') {
-                alertBox.classList.add('alert-warning');
-            } else {
-                alertBox.classList.add('alert-success');
+    function disableEditing() {
+        document.getElementById('addBtn').disabled = true;
+        document.getElementById('resetBtn').disabled = true;
+        document.getElementById('saveBtn').disabled = true;
+        
+        document.getElementById('searchInput').disabled = true;
+        document.getElementById('statusFilter').disabled = true;
+        document.getElementById('sortSelect').disabled = true;
+        
+        document.querySelectorAll('.date-cell').forEach(cell => {
+            cell.style.cursor = 'default';
+            cell.onclick = null;
+        });
+        
+        document.querySelectorAll('.action-buttons button').forEach(button => {
+            button.disabled = true;
+        });
+    }
+
+    // ==================== PROTOCOL MANAGEMENT ====================
+
+    function updateProtocolSelector() {
+        const protocolSelect = document.getElementById('protocolSelect');
+        const protocolTemplate = document.getElementById('protocolTemplate');
+        
+        protocolSelect.innerHTML = '';
+        protocolTemplate.innerHTML = '<option value="">Créer un protocole vide</option>';
+        
+        Object.keys(protocols).forEach(protocolId => {
+            const protocol = protocols[protocolId];
+            const option = document.createElement('option');
+            option.value = protocolId;
+            option.textContent = protocol.name;
+            if (protocolId === currentProtocol) {
+                option.selected = true;
             }
+            protocolSelect.appendChild(option);
             
-            alertBox.classList.add('show');
-            setTimeout(() => {
-                alertBox.classList.remove('show');
-            }, 3000);
-        }
+            const templateOption = document.createElement('option');
+            templateOption.value = protocolId;
+            templateOption.textContent = protocol.name;
+            protocolTemplate.appendChild(templateOption);
+        });
+        
+        document.getElementById('currentProtocolName').textContent = protocols[currentProtocol].name;
+    }
 
-        // Calculer l'âge en semaines
-        function calculateWeekAge(days) {
-            return Math.floor(days / 7);
-        }
+    function renderProtocolList() {
+        const protocolList = document.getElementById('protocolList');
+        protocolList.innerHTML = '';
+        
+        Object.keys(protocols).forEach(protocolId => {
+            const protocol = protocols[protocolId];
+            const isCurrent = protocolId === currentProtocol;
+            
+            protocolList.innerHTML += `
+                <div class="protocol-item">
+                    <div>
+                        <div class="protocol-item-name">
+                            ${protocol.name}
+                            ${isCurrent ? '<span class="current-protocol-indicator">Actuel</span>' : ''}
+                        </div>
+                        <div class="protocol-item-info">
+                            ${protocol.description || 'Aucune description'}
+                        </div>
+                        <div class="protocol-item-info">
+                            ${protocol.vaccines.length} vaccins - 
+                            ${protocol.vaccines.filter(v => v.completed).length} complétés
+                        </div>
+                    </div>
+                    <div class="protocol-item-actions">
+                        <button class="btn-small btn-edit" onclick="editProtocol('${protocolId}')" ${!isUnlocked ? 'disabled' : ''}>
+                            ✏️
+                        </button>
+                        <button class="btn-small btn-check" onclick="switchProtocol('${protocolId}')">
+                            🔄
+                        </button>
+                        <button class="btn-small btn-delete" onclick="deleteProtocol('${protocolId}')" ${!isUnlocked || isCurrent ? 'disabled' : ''}>
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    }
 
-        // Obtenir la date d'affichage (priorité à la date personnalisée)
-        function getVaccineDate(vaccine) {
-            // Si une date personnalisée existe, l'utiliser
-            if (vaccine.customDate) {
-                return formatDateForDisplay(vaccine.customDate);
-            }
-            
-            // Sinon calculer à partir de la date d'éclosion
-            if (!hatchDate) return '-';
-            
-            const date = new Date(hatchDate);
-            date.setDate(date.getDate() + vaccine.age);
-            
-            return date.toLocaleDateString('fr-FR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
+    function toggleProtocolList() {
+        const protocolList = document.getElementById('protocolList');
+        protocolList.classList.toggle('active');
+        
+        if (protocolList.classList.contains('active')) {
+            renderProtocolList();
         }
+    }
 
-        // Formater la date pour l'input
-        function formatDateForInput(dateString) {
-            if (!dateString || dateString === '-') return '';
-            
-            // Si c'est déjà au format YYYY-MM-DD, le retourner tel quel
-            if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                return dateString;
-            }
-            
-            // Si c'est au format DD/MM/YYYY, le convertir
-            if (dateString.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-                const [day, month, year] = dateString.split('/');
-                return `${year}-${month}-${day}`;
-            }
-            
-            return '';
+    function switchProtocol(protocolId = null) {
+    if (!protocolId) {
+        protocolId = document.getElementById('protocolSelect').value;
+    }
+    
+    if (protocols[protocolId]) {
+        currentProtocol = protocolId;
+        vaccines = protocols[protocolId].vaccines;
+        hatchDate = protocols[protocolId].hatchDate;
+        
+        renderTimeline();
+        updateProtocolSelector();
+        updateProtocolInfoDisplay();
+        showAlert(`Protocole "${protocols[protocolId].name}" chargé`);
+    }
+}
+
+    function openProtocolModal() {
+        if (!isUnlocked) return;
+        
+        document.getElementById('protocolModalTitle').textContent = 'Nouveau Protocole';
+        document.getElementById('protocolForm').reset();
+        document.getElementById('duplicateCurrent').checked = false;
+        document.getElementById('templateSelection').style.display = 'none';
+        document.getElementById('protocolModal').classList.add('active');
+    }
+
+    function closeProtocolModal() {
+        document.getElementById('protocolModal').classList.remove('active');
+    }
+
+    function toggleTemplateSelection() {
+        const duplicateCurrent = document.getElementById('duplicateCurrent').checked;
+        document.getElementById('templateSelection').style.display = duplicateCurrent ? 'block' : 'none';
+    }
+
+async function createProtocol() {
+    if (!isUnlocked) return;
+    
+    const name = document.getElementById('protocolName').value;
+    const description = document.getElementById('protocolDescription').value;
+    const farmName = document.getElementById('protocolFarmNameInput').value;
+    const doctorName = document.getElementById('protocolDoctorNameInput').value;
+    const hatchDate = document.getElementById('protocolHatchDate').value || new Date().toISOString().split('T')[0];
+    const duplicateCurrent = document.getElementById('duplicateCurrent').checked;
+    const templateId = document.getElementById('protocolTemplate').value;
+    
+    if (Object.values(protocols).some(p => p.name === name)) {
+        showAlert('❌ Un protocole avec ce nom existe déjà', 'error');
+        return;
+    }
+    
+    const protocolId = 'protocol_' + Date.now();
+    
+    if (duplicateCurrent && templateId) {
+        protocols[protocolId] = {
+            name: name,
+            description: description,
+            farmName: farmName,
+            doctorName: doctorName,
+            hatchDate: hatchDate,
+            vaccines: JSON.parse(JSON.stringify(protocols[templateId].vaccines))
+        };
+    } else {
+        protocols[protocolId] = {
+            name: name,
+            description: description,
+            farmName: farmName,
+            doctorName: doctorName,
+            hatchDate: hatchDate,
+            vaccines: []
+        };
+    }
+    
+    currentProtocol = protocolId;
+    vaccines = protocols[protocolId].vaccines;
+    
+    closeProtocolModal();
+    renderTimeline();
+    updateProtocolSelector();
+    updateProtocolInfoDisplay();
+    await saveToServer();
+    showAlert(`Protocole "${name}" créé avec succès`);
+}
+
+    function editProtocol(protocolId) {
+    if (!isUnlocked) return;
+    
+    const protocol = protocols[protocolId];
+    document.getElementById('protocolModalTitle').textContent = 'Modifier le Protocole';
+    document.getElementById('protocolName').value = protocol.name;
+    document.getElementById('protocolDescription').value = protocol.description || '';
+    document.getElementById('protocolFarmNameInput').value = protocol.farmName || '';
+    document.getElementById('protocolDoctorNameInput').value = protocol.doctorName || '';
+    document.getElementById('protocolHatchDate').value = protocol.hatchDate;
+    
+    document.getElementById('duplicateCurrent').style.display = 'none';
+    document.getElementById('templateSelection').style.display = 'none';
+    
+    const form = document.getElementById('protocolForm');
+    form.onsubmit = async function(e) {
+        e.preventDefault();
+        await updateProtocol(protocolId);
+    };
+    
+    document.getElementById('protocolModal').classList.add('active');
+}
+async function updateProtocol(protocolId) {
+    if (!isUnlocked) return;
+    
+    const name = document.getElementById('protocolName').value;
+    const description = document.getElementById('protocolDescription').value;
+    const farmName = document.getElementById('protocolFarmNameInput').value;
+    const doctorName = document.getElementById('protocolDoctorNameInput').value;
+    const hatchDate = document.getElementById('protocolHatchDate').value;
+    
+    if (Object.keys(protocols).some(id => id !== protocolId && protocols[id].name === name)) {
+        showAlert('❌ Un autre protocole avec ce nom existe déjà', 'error');
+        return;
+    }
+    
+    protocols[protocolId].name = name;
+    protocols[protocolId].description = description;
+    protocols[protocolId].farmName = farmName;
+    protocols[protocolId].doctorName = doctorName;
+    protocols[protocolId].hatchDate = hatchDate;
+    
+    closeProtocolModal();
+    renderTimeline();
+    updateProtocolSelector();
+    updateProtocolInfoDisplay();
+    renderProtocolList();
+    await saveToServer();
+    showAlert(`Protocole "${name}" modifié avec succès`);
+}
+
+    async function deleteProtocol(protocolId) {
+        if (!isUnlocked) return;
+        
+        if (protocolId === currentProtocol) {
+            showAlert('❌ Impossible de supprimer le protocole actuel', 'error');
+            return;
         }
+        
+        const protocolName = protocols[protocolId].name;
+        
+        if (confirm(`Êtes-vous sûr de vouloir supprimer le protocole "${protocolName}"?`)) {
+            delete protocols[protocolId];
+            
+            updateProtocolSelector();
+            renderProtocolList();
+            await saveToServer(); // Save to server
+            showAlert(`Protocole "${protocolName}" supprimé`);
+        }
+    }
 
-        // Formater la date pour l'affichage
-        function formatDateForDisplay(dateString) {
-            if (!dateString) return '-';
-            
-            // Si c'est au format YYYY-MM-DD, le convertir en DD/MM/YYYY
-            if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                const [year, month, day] = dateString.split('-');
-                return `${day}/${month}/${year}`;
+    function exportCurrentProtocol() {
+        if (!isUnlocked) return;
+        exportProtocolToServer(currentProtocol);
+    }
+
+    function openImportModal() {
+        if (!isUnlocked) return;
+        
+        document.getElementById('importModal').classList.add('active');
+    }
+
+    function closeImportModal() {
+        document.getElementById('importModal').classList.remove('active');
+    }
+
+    async function importProtocol() {
+        if (!isUnlocked) return;
+        
+        const fileInput = document.getElementById('importFile');
+        const protocolNameInput = document.getElementById('importProtocolName');
+        
+        if (!fileInput.files.length) {
+            showAlert('❌ Veuillez sélectionner un fichier', 'error');
+            return;
+        }
+        
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = async function(e) {
+            try {
+                const importedProtocol = JSON.parse(e.target.result);
+                
+                if (!importedProtocol.name || !importedProtocol.vaccines) {
+                    showAlert('❌ Format de fichier invalide', 'error');
+                    return;
+                }
+                
+                const protocolName = protocolNameInput.value || importedProtocol.name;
+                
+                await importProtocolFromServer(importedProtocol, protocolName);
+                
+                closeImportModal();
+            } catch (err) {
+                console.error('Erreur lors de l\'importation:', err);
+                showAlert('❌ Erreur lors de l\'importation du fichier', 'error');
             }
-            
+        };
+        
+        reader.readAsText(file);
+    }
+
+    // ==================== VACCINE MANAGEMENT ====================
+
+    function showAlert(message, type = 'success') {
+        if (!isUnlocked && !isViewMode) return;
+        
+        const alertBox = document.getElementById('alertBox');
+        const alertMessage = document.getElementById('alertMessage');
+        alertMessage.textContent = message;
+        
+        alertBox.className = 'alert';
+        if (type === 'error') {
+            alertBox.classList.add('alert-error');
+        } else if (type === 'warning') {
+            alertBox.classList.add('alert-warning');
+        } else {
+            alertBox.classList.add('alert-success');
+        }
+        
+        alertBox.classList.add('show');
+        setTimeout(() => {
+            alertBox.classList.remove('show');
+        }, 3000);
+    }
+
+    function calculateWeekAge(days) {
+        return Math.floor(days / 7);
+    }
+
+    function getVaccineDate(vaccine) {
+        if (vaccine.customDate) {
+            return formatDateForDisplay(vaccine.customDate);
+        }
+        
+        if (!hatchDate) return '-';
+        
+        const date = new Date(hatchDate);
+        date.setDate(date.getDate() + vaccine.age);
+        
+        return date.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    }
+
+    function formatDateForInput(dateString) {
+        if (!dateString || dateString === '-') return '';
+        
+        if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
             return dateString;
         }
-
-        // Fonction pour filtrer et trier les vaccins
-        function getFilteredAndSortedVaccines() {
-            let filtered = vaccines.filter(vaccine => {
-                // Filtre de recherche
-                const matchesSearch = searchTerm === '' || 
-                    vaccine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    vaccine.method.toLowerCase().includes(searchTerm.toLowerCase());
-                
-                // Filtre de statut
-                const matchesStatus = statusFilter === 'all' || 
-                    (statusFilter === 'completed' && vaccine.completed) ||
-                    (statusFilter === 'pending' && !vaccine.completed);
-                
-                return matchesSearch && matchesStatus;
-            });
-            
-            // Tri
-            filtered.sort((a, b) => {
-                let aValue, bValue;
-                
-                if (currentSort.field === 'status') {
-                    aValue = a.completed ? 1 : 0;
-                    bValue = b.completed ? 1 : 0;
-                } else if (currentSort.field === 'week') {
-                    aValue = calculateWeekAge(a.age);
-                    bValue = calculateWeekAge(b.age);
-                } else if (currentSort.field === 'date') {
-                    // Pour le tri par date, utiliser la date personnalisée ou calculée
-                    const aDate = a.customDate || calculateVaccineDate(a.age);
-                    const bDate = b.customDate || calculateVaccineDate(b.age);
-                    aValue = new Date(aDate);
-                    bValue = new Date(bDate);
-                } else {
-                    aValue = a[currentSort.field];
-                    bValue = b[currentSort.field];
-                }
-                
-                if (currentSort.direction === 'asc') {
-                    return aValue > bValue ? 1 : -1;
-                } else {
-                    return aValue < bValue ? 1 : -1;
-                }
-            });
-            
-            return filtered;
+        
+        if (dateString.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+            const [day, month, year] = dateString.split('/');
+            return `${year}-${month}-${day}`;
         }
+        
+        return '';
+    }
 
-        // Fonction utilitaire pour calculer la date (conservée pour le tri)
-        function calculateVaccineDate(ageInDays) {
-            if (!hatchDate) return new Date().toISOString().split('T')[0];
-            
-            const date = new Date(hatchDate);
-            date.setDate(date.getDate() + ageInDays);
-            return date.toISOString().split('T')[0];
+    function formatDateForDisplay(dateString) {
+        if (!dateString) return '-';
+        
+        if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            const [year, month, day] = dateString.split('-');
+            return `${day}/${month}/${year}`;
         }
+        
+        return dateString;
+    }
 
-        // Rendu de la timeline
-        function renderTimeline() {
-            const tableBody = document.getElementById('vaccineTableBody');
-            const filteredVaccines = getFilteredAndSortedVaccines();
+    function getFilteredAndSortedVaccines() {
+        let filtered = vaccines.filter(vaccine => {
+            const matchesSearch = searchTerm === '' || 
+                vaccine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                vaccine.method.toLowerCase().includes(searchTerm.toLowerCase());
             
-            tableBody.innerHTML = filteredVaccines.map(vaccine => {
-                const displayDate = getVaccineDate(vaccine);
-                const inputDate = formatDateForInput(displayDate);
-                
-                return `
-                <tr class="${vaccine.completed ? 'completed' : ''}">
-                    <td class="text-center age-cell">${vaccine.age}</td>
-                    <td class="text-center week-cell">${calculateWeekAge(vaccine.age)} sem</td>
-                    <td class="text-center date-cell" data-vaccine-id="${vaccine.id}">
-                        <input type="date" 
-                               class="date-input" 
-                               value="${inputDate}"
-                               style="display: none;"
-                               ${!isUnlocked ? 'disabled' : ''}>
-                        <div class="date-display">${displayDate}</div>
-                    </td>
-                    <td class="vaccine-name-cell">${vaccine.name}</td>
-                    <td class="method-cell">💉 ${vaccine.method}</td>
-                    <td class="notes-cell">
-                        ${vaccine.notes || '-'}
-                        ${vaccine.image ? `<img src="${vaccine.image}" alt="Image" class="notes-image" onclick="showImageModal('${vaccine.image}')">` : ''}
-                    </td>
-                    <td class="text-center">
-                        <span class="status-badge ${vaccine.completed ? 'completed' : 'pending'}">
-                            ${vaccine.completed ? '✓ Complété' : '⏳ En attente'}
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <div class="action-buttons">
-                            <button class="btn-small btn-check" onclick="toggleCompleted(${vaccine.id})" title="${vaccine.completed ? 'Marquer non complété' : 'Marquer complété'}" ${!isUnlocked ? 'disabled' : ''}>
-                                ${vaccine.completed ? '↩️' : '✓'}
-                            </button>
-                            <button class="btn-small btn-edit" onclick="editVaccine(${vaccine.id})" title="Modifier" ${!isUnlocked ? 'disabled' : ''}>
-                                ✏️
-                            </button>
-                            <button class="btn-small btn-delete" onclick="deleteVaccine(${vaccine.id})" title="Supprimer" ${!isUnlocked ? 'disabled' : ''}>
-                                🗑️
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                `;
-            }).join('');
-
-            // Réattacher les événements pour les dates
-            document.querySelectorAll('.date-cell').forEach(cell => {
-                if (isUnlocked) {
-                    cell.style.cursor = 'pointer';
-                    cell.onclick = function() {
-                        makeDateEditable(this);
-                    };
-                } else {
-                    cell.style.cursor = 'default';
-                    cell.onclick = null;
-                }
-            });
-
-            updateStats();
-            saveToLocalStorage();
+            const matchesStatus = statusFilter === 'all' || 
+                (statusFilter === 'completed' && vaccine.completed) ||
+                (statusFilter === 'pending' && !vaccine.completed);
             
-            // Afficher un indicateur si des données sauvegardées sont chargées
-            if (localStorage.getItem('vaccinationProtocol') && !isUnlocked) {
-                console.log('✅ Affichage du dernier protocole sauvegardé');
-            }
-        }
-
-        // Rendre une date éditable
-        function makeDateEditable(cell) {
-            if (!isUnlocked) return;
+            return matchesSearch && matchesStatus;
+        });
+        
+        filtered.sort((a, b) => {
+            let aValue, bValue;
             
-            const input = cell.querySelector('.date-input');
-            const display = cell.querySelector('.date-display');
-            const vaccineId = parseInt(cell.getAttribute('data-vaccine-id'));
-            
-            // Cacher l'affichage et montrer l'input
-            display.style.display = 'none';
-            input.style.display = 'block';
-            input.focus();
-            
-            // Sauvegarder la valeur originale
-            const originalValue = input.value;
-            
-            // Fonction pour terminer l'édition
-            const finishEditing = () => {
-                display.style.display = 'block';
-                input.style.display = 'none';
-                
-                // Si la valeur a changé, mettre à jour
-                if (input.value !== originalValue) {
-                    updateVaccineDate(vaccineId, input.value);
-                }
-                
-                // Nettoyer les écouteurs d'événements
-                input.removeEventListener('change', finishEditing);
-                input.removeEventListener('blur', finishEditing);
-            };
-            
-            // Ajouter les écouteurs d'événements
-            input.addEventListener('change', finishEditing);
-            input.addEventListener('blur', finishEditing);
-        }
-
-        // Mettre à jour la date d'un vaccin
-        function updateVaccineDate(vaccineId, newDate) {
-            if (!isUnlocked) return;
-            if (!newDate) return;
-            
-            const vaccine = vaccines.find(v => v.id === vaccineId);
-            if (!vaccine) return;
-            
-            // Stocker la date personnalisée
-            vaccine.customDate = newDate;
-            
-            renderTimeline();
-            showAlert('Date mise à jour avec succès');
-        }
-
-        // Mise à jour des statistiques
-        function updateStats() {
-            const total = vaccines.length;
-            const completed = vaccines.filter(v => v.completed).length;
-            const pending = total - completed;
-            const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
-            
-            // Trouver le prochain vaccin en attente
-            const nextVaccine = vaccines
-                .filter(v => !v.completed)
-                .sort((a, b) => {
-                    // Trier par date personnalisée ou par âge
-                    const aDate = a.customDate || calculateVaccineDate(a.age);
-                    const bDate = b.customDate || calculateVaccineDate(b.age);
-                    return new Date(aDate) - new Date(bDate);
-                })[0];
-
-            document.getElementById('statTotal').textContent = total;
-            document.getElementById('statCompleted').textContent = completed;
-            document.getElementById('statPending').textContent = pending;
-            document.getElementById('statProgress').textContent = progress + '%';
-            
-            if (nextVaccine) {
-                const nextDate = getVaccineDate(nextVaccine);
-                document.getElementById('statNext').textContent = `${nextVaccine.age} jours (${nextDate})`;
+            if (currentSort.field === 'status') {
+                aValue = a.completed ? 1 : 0;
+                bValue = b.completed ? 1 : 0;
+            } else if (currentSort.field === 'week') {
+                aValue = calculateWeekAge(a.age);
+                bValue = calculateWeekAge(b.age);
+            } else if (currentSort.field === 'date') {
+                const aDate = a.customDate || calculateVaccineDate(a.age);
+                const bDate = b.customDate || calculateVaccineDate(b.age);
+                aValue = new Date(aDate);
+                bValue = new Date(bDate);
             } else {
-                document.getElementById('statNext').textContent = '-';
+                aValue = a[currentSort.field];
+                bValue = b[currentSort.field];
             }
-        }
-
-        // Basculer le statut complété
-        function toggleCompleted(id) {
-            if (!isUnlocked) return;
             
-            const vaccine = vaccines.find(v => v.id === id);
-            if (vaccine) {
-                vaccine.completed = !vaccine.completed;
-                renderTimeline();
-                showAlert(vaccine.completed ? '✓ Vaccin marqué comme complété' : 'Vaccin marqué comme non complété');
-            }
-        }
-
-        // Ouvrir le modal d'ajout
-        function openAddModal() {
-            if (!isUnlocked) return;
-            
-            editingId = null;
-            document.getElementById('modalTitle').textContent = 'Ajouter un Vaccin';
-            document.getElementById('vaccineForm').reset();
-            document.getElementById('imagePreview').classList.remove('show');
-            document.getElementById('vaccineModal').classList.add('active');
-        }
-
-        // Modifier un vaccin
-        function editVaccine(id) {
-            if (!isUnlocked) return;
-            
-            editingId = id;
-            const vaccine = vaccines.find(v => v.id === id);
-            if (!vaccine) return;
-
-            document.getElementById('modalTitle').textContent = 'Modifier le Vaccin';
-            document.getElementById('vaccineAge').value = vaccine.age;
-            
-            // Remplir le champ de date personnalisée
-            if (vaccine.customDate) {
-                document.getElementById('vaccineCustomDate').value = vaccine.customDate;
+            if (currentSort.direction === 'asc') {
+                return aValue > bValue ? 1 : -1;
             } else {
-                // Calculer la date à partir de l'âge et de la date d'éclosion
-                const calculatedDate = calculateVaccineDate(vaccine.age);
-                document.getElementById('vaccineCustomDate').value = calculatedDate;
+                return aValue < bValue ? 1 : -1;
             }
+        });
+        
+        return filtered;
+    }
+
+    function calculateVaccineDate(ageInDays) {
+        if (!hatchDate) return new Date().toISOString().split('T')[0];
+        
+        const date = new Date(hatchDate);
+        date.setDate(date.getDate() + ageInDays);
+        return date.toISOString().split('T')[0];
+    }
+
+    function renderTimeline() {
+        const tableBody = document.getElementById('vaccineTableBody');
+        const filteredVaccines = getFilteredAndSortedVaccines();
+        
+        tableBody.innerHTML = filteredVaccines.map(vaccine => {
+            const displayDate = getVaccineDate(vaccine);
+            const inputDate = formatDateForInput(displayDate);
             
-            document.getElementById('vaccineName').value = vaccine.name;
-            document.getElementById('vaccineMethod').value = vaccine.method;
-            document.getElementById('vaccineNotes').value = vaccine.notes;
-            
-            // Afficher l'aperçu de l'image si elle existe
-            if (vaccine.image) {
-                document.getElementById('imagePreview').src = vaccine.image;
-                document.getElementById('imagePreview').classList.add('show');
-            } else {
-                document.getElementById('imagePreview').classList.remove('show');
-            }
-            
-            document.getElementById('vaccineModal').classList.add('active');
-        }
+            return `
+            <tr class="${vaccine.completed ? 'completed' : ''}">
+                <td class="text-center age-cell">${vaccine.age}</td>
+                <td class="text-center week-cell">${calculateWeekAge(vaccine.age)} sem</td>
+                <td class="text-center date-cell" data-vaccine-id="${vaccine.id}">
+                    <input type="date" 
+                           class="date-input" 
+                           value="${inputDate}"
+                           style="display: none;"
+                           ${!isUnlocked ? 'disabled' : ''}>
+                    <div class="date-display">${displayDate}</div>
+                </td>
+                <td class="vaccine-name-cell">${vaccine.name}</td>
+                <td class="method-cell">💉 ${vaccine.method}</td>
+                <td class="notes-cell">
+                    ${vaccine.notes || '-'}
+                    ${vaccine.image ? `<img src="${vaccine.image}" alt="Image" class="notes-image" onclick="showImageModal('${vaccine.image}')">` : ''}
+                </td>
+                <td class="text-center">
+                    <span class="status-badge ${vaccine.completed ? 'completed' : 'pending'}">
+                        ${vaccine.completed ? '✓ Complété' : '⏳ En attente'}
+                    </span>
+                </td>
+                <td class="text-center">
+                    <div class="action-buttons">
+                        <button class="btn-small btn-check" onclick="toggleCompleted(${vaccine.id})" title="${vaccine.completed ? 'Marquer non complété' : 'Marquer complété'}" ${!isUnlocked ? 'disabled' : ''}>
+                            ${vaccine.completed ? '↩️' : '✓'}
+                        </button>
+                        <button class="btn-small btn-edit" onclick="editVaccine(${vaccine.id})" title="Modifier" ${!isUnlocked ? 'disabled' : ''}>
+                            ✏️
+                        </button>
+                        <button class="btn-small btn-delete" onclick="deleteVaccine(${vaccine.id})" title="Supprimer" ${!isUnlocked ? 'disabled' : ''}>
+                            🗑️
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            `;
+        }).join('');
 
-        // Supprimer un vaccin
-        function deleteVaccine(id) {
-            if (!isUnlocked) return;
-            
-            if (confirm('Êtes-vous sûr de vouloir supprimer ce vaccin?')) {
-                vaccines = vaccines.filter(v => v.id !== id);
-                renderTimeline();
-                showAlert('🗑️ Vaccin supprimé');
-            }
-        }
-
-        // Fermer le modal
-        function closeModal() {
-            document.getElementById('vaccineModal').classList.remove('active');
-        }
-
-        // Afficher l'image en grand
-        function showImageModal(imageUrl) {
-            document.getElementById('modalImage').src = imageUrl;
-            document.getElementById('imageModal').classList.add('active');
-        }
-
-        // Fermer le modal d'image
-        function closeImageModal() {
-            document.getElementById('imageModal').classList.remove('active');
-        }
-
-        // Convertir l'image en base64
-        function convertImageToBase64(file, callback) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                callback(e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Gestion de la soumission du formulaire
-        document.getElementById('vaccineForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            if (!isUnlocked) return;
-
-            const age = parseInt(document.getElementById('vaccineAge').value);
-            const customDate = document.getElementById('vaccineCustomDate').value;
-            const name = document.getElementById('vaccineName').value;
-            const method = document.getElementById('vaccineMethod').value;
-            const notes = document.getElementById('vaccineNotes').value;
-            const imageFile = document.getElementById('vaccineImage').files[0];
-
-            // Validation : vérifier si l'âge existe déjà (sauf en mode édition)
-            if (!editingId) {
-                const existingVaccine = vaccines.find(v => v.age === age);
-                if (existingVaccine) {
-                    showAlert(`❌ Un vaccin existe déjà à l'âge de ${age} jours`, 'error');
-                    return;
-                }
-            } else {
-                // En mode édition, vérifier si l'âge existe pour un autre vaccin
-                const existingVaccine = vaccines.find(v => v.age === age && v.id !== editingId);
-                if (existingVaccine) {
-                    showAlert(`❌ Un autre vaccin existe déjà à l'âge de ${age} jours`, 'error');
-                    return;
-                }
-            }
-
-            // Fonction pour enregistrer le vaccin
-            const saveVaccine = (imageData = '') => {
-                const vaccine = {
-                    id: editingId || Date.now(),
-                    age: age,
-                    name: name,
-                    method: method,
-                    notes: notes,
-                    image: imageData,
-                    completed: editingId ? vaccines.find(v => v.id === editingId).completed : false,
-                    customDate: customDate || "" // Utiliser la date personnalisée ou une chaîne vide
+        document.querySelectorAll('.date-cell').forEach(cell => {
+            if (isUnlocked) {
+                cell.style.cursor = 'pointer';
+                cell.onclick = function() {
+                    makeDateEditable(this);
                 };
-
-                if (editingId) {
-                    const index = vaccines.findIndex(v => v.id === editingId);
-                    vaccines[index] = vaccine;
-                    showAlert('✓ Vaccin modifié avec succès');
-                } else {
-                    vaccines.push(vaccine);
-                    showAlert('✓ Vaccin ajouté avec succès');
-                }
-
-                closeModal();
-                renderTimeline();
-            };
-
-            // Si une image est sélectionnée, la convertir en base64
-            if (imageFile) {
-                convertImageToBase64(imageFile, saveVaccine);
             } else {
-                // Si pas d'image, enregistrer directement
-                saveVaccine();
+                cell.style.cursor = 'default';
+                cell.onclick = null;
             }
         });
 
-        // Réinitialiser le protocole
-        function resetProtocol() {
-            if (!isUnlocked) return;
+        updateStats();
+    }
+
+    function makeDateEditable(cell) {
+        if (!isUnlocked) return;
+        
+        const input = cell.querySelector('.date-input');
+        const display = cell.querySelector('.date-display');
+        const vaccineId = parseInt(cell.getAttribute('data-vaccine-id'));
+        
+        display.style.display = 'none';
+        input.style.display = 'block';
+        input.focus();
+        
+        const originalValue = input.value;
+        
+        const finishEditing = async () => {
+            display.style.display = 'block';
+            input.style.display = 'none';
             
-            if (confirm('Réinitialiser tous les statuts de vaccination?')) {
-                vaccines.forEach(v => v.completed = false);
-                renderTimeline();
-                showAlert('🔄 Protocole réinitialisé');
-            }
-        }
-
-        // Sauvegarder le protocole
-        function saveProtocol() {
-            if (!isUnlocked) return;
-            
-            const dataStr = JSON.stringify(vaccines, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `protocole_vaccination_${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            showAlert('💾 Protocole sauvegardé');
-        }
-
-        // Charger un protocole
-        function loadProtocol() {
-            if (!isUnlocked) return;
-            
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    try {
-                        const loadedData = JSON.parse(event.target.result);
-                        // Migration : s'assurer que chaque vaccin a un champ customDate
-                        vaccines = loadedData.map(vaccine => ({
-                            ...vaccine,
-                            customDate: vaccine.customDate || ""
-                        }));
-                        renderTimeline();
-                        showAlert('✓ Protocole chargé avec succès');
-                    } catch (err) {
-                        showAlert('❌ Erreur lors du chargement du fichier', 'error');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
-        // Imprimer le protocole
-        function printProtocol() {
-            window.print();
-            showAlert('🖨️ Impression lancée');
-        }
-
-        // Exporter en PDF
-        function exportToPDF() {
-            const element = document.querySelector('.protocol-container');
-            
-            showAlert('Génération du PDF en cours...', 'warning');
-            
-            html2canvas(element, {
-                scale: 2,
-                useCORS: true,
-                logging: false,
-                backgroundColor: isDarkMode ? '#34495e' : '#ffffff'
-            }).then(canvas => {
-                const { jsPDF } = window.jspdf;
-                const imgData = canvas.toDataURL('image/png');
-                
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgWidth = 210;
-                const pageHeight = 297;
-                const imgHeight = canvas.height * imgWidth / canvas.width;
-                let heightLeft = imgHeight;
-                let position = 0;
-
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                while (heightLeft >= 0) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                    heightLeft -= pageHeight;
-                }
-                
-                pdf.save(`Protocole_Vaccination_${new Date().toISOString().split('T')[0]}.pdf`);
-                showAlert('✓ PDF téléchargé avec succès!');
-            }).catch(err => {
-                console.error('Erreur PDF:', err);
-                showAlert('❌ Erreur lors de la génération du PDF', 'error');
-            });
-        }
-
-        // Stockage local
-        function saveToLocalStorage() {
-            localStorage.setItem('vaccinationProtocol', JSON.stringify(vaccines));
-        }
-
-        function loadFromLocalStorage() {
-            const stored = localStorage.getItem('vaccinationProtocol');
-            if (stored) {
-                try {
-                    const parsed = JSON.parse(stored);
-                    // Migration : s'assurer que chaque vaccin a un champ customDate
-                    vaccines = parsed.map(vaccine => ({
-                        ...vaccine,
-                        customDate: vaccine.customDate || ""
-                    }));
-                    return true;
-                } catch (e) {
-                    console.error('Erreur lors du chargement du stockage local:', e);
-                }
-            }
-            return false;
-        }
-
-        // Mode sombre
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-mode', isDarkMode);
-            localStorage.setItem('darkMode', isDarkMode);
-            
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            darkModeToggle.textContent = isDarkMode ? '☀️ Mode Clair' : '🌙 Mode Sombre';
-            
-            showAlert(isDarkMode ? 'Mode sombre activé' : 'Mode clair activé');
-        }
-
-        // Gestion du tri
-        function setupSorting() {
-            document.querySelectorAll('.sortable').forEach(header => {
-                header.addEventListener('click', () => {
-                    const field = header.getAttribute('data-sort');
-                    
-                    if (currentSort.field === field) {
-                        currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
-                    } else {
-                        currentSort.field = field;
-                        currentSort.direction = 'asc';
-                    }
-                    
-                    renderTimeline();
-                });
-            });
-        }
-
-        // Aperçu de l'image
-        function setupImagePreview() {
-            document.getElementById('vaccineImage').addEventListener('change', function() {
-                const file = this.files[0];
-                const preview = document.getElementById('imagePreview');
-                
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.src = e.target.result;
-                        preview.classList.add('show');
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    preview.classList.remove('show');
-                }
-            });
-        }
-
-        // Initialisation
-        function init() {
-            // Charger automatiquement le dernier protocole AU DÉMARRAGE
-            if (!autoLoadLastProtocol()) {
-                // Si aucun protocole sauvegardé, initialiser avec les données par défaut
-                initializeDefaultData();
+            if (input.value !== originalValue) {
+                await updateVaccineDate(vaccineId, input.value);
             }
             
-            // Afficher la protection par mot de passe au démarrage
-            document.getElementById('passwordProtection').style.display = 'flex';
-            document.getElementById('mainContent').style.display = 'none';
-            
-            // Appliquer le mode sombre si activé
-            if (isDarkMode) {
-                document.body.classList.add('dark-mode');
-                document.getElementById('darkModeToggle').textContent = '☀️ Mode Clair';
-            }
-            
-            // Configurer les écouteurs d'événements
-            document.getElementById('searchInput').addEventListener('input', (e) => {
-                searchTerm = e.target.value;
-                renderTimeline();
-            });
-            
-            document.getElementById('statusFilter').addEventListener('change', (e) => {
-                statusFilter = e.target.value;
-                renderTimeline();
-            });
-            
-            document.getElementById('sortSelect').addEventListener('change', (e) => {
-                currentSort.field = e.target.value;
-                currentSort.direction = 'asc';
-                renderTimeline();
-            });
-            
-            document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
-            
-            // Permettre la soumission du mot de passe avec la touche Entrée
-            document.getElementById('passwordInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
-            });
-            
-            // Configurer le tri
-            setupSorting();
-            
-            // Configurer l'aperçu d'image
-            setupImagePreview();
-            
-            // Rendre la timeline IMMÉDIATEMENT (même en mode verrouillé)
+            input.removeEventListener('change', finishEditing);
+            input.removeEventListener('blur', finishEditing);
+        };
+        
+        input.addEventListener('change', finishEditing);
+        input.addEventListener('blur', finishEditing);
+    }
+
+    async function updateVaccineDate(vaccineId, newDate) {
+        if (!isUnlocked) return;
+        if (!newDate) return;
+        
+        const vaccine = vaccines.find(v => v.id === vaccineId);
+        if (!vaccine) return;
+        
+        vaccine.customDate = newDate;
+        
+        renderTimeline();
+        await saveToServer(); // Save to server
+        showAlert('Date mise à jour avec succès');
+    }
+
+    function updateStats() {
+        const total = vaccines.length;
+        const completed = vaccines.filter(v => v.completed).length;
+        const pending = total - completed;
+        const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+        
+        const nextVaccine = vaccines
+            .filter(v => !v.completed)
+            .sort((a, b) => {
+                const aDate = a.customDate || calculateVaccineDate(a.age);
+                const bDate = b.customDate || calculateVaccineDate(b.age);
+                return new Date(aDate) - new Date(bDate);
+            })[0];
+
+        document.getElementById('statTotal').textContent = total;
+        document.getElementById('statCompleted').textContent = completed;
+        document.getElementById('statPending').textContent = pending;
+        document.getElementById('statProgress').textContent = progress + '%';
+        
+        if (nextVaccine) {
+            const nextDate = getVaccineDate(nextVaccine);
+            document.getElementById('statNext').textContent = `${nextVaccine.age} jours (${nextDate})`;
+        } else {
+            document.getElementById('statNext').textContent = '-';
+        }
+    }
+
+    async function toggleCompleted(id) {
+        if (!isUnlocked) return;
+        
+        const vaccine = vaccines.find(v => v.id === id);
+        if (vaccine) {
+            vaccine.completed = !vaccine.completed;
             renderTimeline();
-            
-            // Afficher un message indiquant que les données sont chargées
-            if (localStorage.getItem('vaccinationProtocol')) {
-                console.log('📂 Dernier protocole chargé automatiquement');
+            await saveToServer(); // Save to server
+            showAlert(vaccine.completed ? '✓ Vaccin marqué comme complété' : 'Vaccin marqué comme non complété');
+        }
+    }
+
+    function openAddModal() {
+        if (!isUnlocked) return;
+        
+        editingId = null;
+        document.getElementById('modalTitle').textContent = 'Ajouter un Vaccin';
+        document.getElementById('vaccineForm').reset();
+        document.getElementById('imagePreview').classList.remove('show');
+        document.getElementById('vaccineModal').classList.add('active');
+    }
+
+    function editVaccine(id) {
+        if (!isUnlocked) return;
+        
+        editingId = id;
+        const vaccine = vaccines.find(v => v.id === id);
+        if (!vaccine) return;
+
+        document.getElementById('modalTitle').textContent = 'Modifier le Vaccin';
+        document.getElementById('vaccineAge').value = vaccine.age;
+        
+        if (vaccine.customDate) {
+            document.getElementById('vaccineCustomDate').value = vaccine.customDate;
+        } else {
+            const calculatedDate = calculateVaccineDate(vaccine.age);
+            document.getElementById('vaccineCustomDate').value = calculatedDate;
+        }
+        
+        document.getElementById('vaccineName').value = vaccine.name;
+        document.getElementById('vaccineMethod').value = vaccine.method;
+        document.getElementById('vaccineNotes').value = vaccine.notes;
+        
+        if (vaccine.image) {
+            document.getElementById('imagePreview').src = vaccine.image;
+            document.getElementById('imagePreview').classList.add('show');
+        } else {
+            document.getElementById('imagePreview').classList.remove('show');
+        }
+        
+        document.getElementById('vaccineModal').classList.add('active');
+    }
+
+    async function deleteVaccine(id) {
+        if (!isUnlocked) return;
+        
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce vaccin?')) {
+            vaccines = vaccines.filter(v => v.id !== id);
+            renderTimeline();
+            await saveToServer(); // Save to server
+            showAlert('🗑️ Vaccin supprimé');
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('vaccineModal').classList.remove('active');
+    }
+
+    function showImageModal(imageUrl) {
+        document.getElementById('modalImage').src = imageUrl;
+        document.getElementById('imageModal').classList.add('active');
+    }
+
+    function closeImageModal() {
+        document.getElementById('imageModal').classList.remove('active');
+    }
+
+    function convertImageToBase64(file, callback) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            callback(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Vaccine form submission
+    document.getElementById('vaccineForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (!isUnlocked) return;
+
+        const age = parseInt(document.getElementById('vaccineAge').value);
+        const customDate = document.getElementById('vaccineCustomDate').value;
+        const name = document.getElementById('vaccineName').value;
+        const method = document.getElementById('vaccineMethod').value;
+        const notes = document.getElementById('vaccineNotes').value;
+        const imageFile = document.getElementById('vaccineImage').files[0];
+
+        if (!editingId) {
+            const existingVaccine = vaccines.find(v => v.age === age);
+            if (existingVaccine) {
+                showAlert(`❌ Un vaccin existe déjà à l'âge de ${age} jours`, 'error');
+                return;
+            }
+        } else {
+            const existingVaccine = vaccines.find(v => v.age === age && v.id !== editingId);
+            if (existingVaccine) {
+                showAlert(`❌ Un autre vaccin existe déjà à l'âge de ${age} jours`, 'error');
+                return;
             }
         }
 
-        // Lancer l'initialisation au chargement
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+        const saveVaccine = async (imageData = '') => {
+            const vaccine = {
+                id: editingId || Date.now(),
+                age: age,
+                name: name,
+                method: method,
+                notes: notes,
+                image: imageData,
+                completed: editingId ? vaccines.find(v => v.id === editingId).completed : false,
+                customDate: customDate || ""
+            };
+
+            if (editingId) {
+                const index = vaccines.findIndex(v => v.id === editingId);
+                vaccines[index] = vaccine;
+                showAlert('✓ Vaccin modifié avec succès');
+            } else {
+                vaccines.push(vaccine);
+                showAlert('✓ Vaccin ajouté avec succès');
+            }
+
+            closeModal();
+            renderTimeline();
+            await saveToServer(); // Save to server
+        };
+
+        if (imageFile) {
+            convertImageToBase64(imageFile, saveVaccine);
+        } else {
+            await saveVaccine();
+        }
+    });
+
+    // Protocol form submission
+    document.getElementById('protocolForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await createProtocol();
+    });
+
+    async function resetProtocol() {
+        if (!isUnlocked) return;
+        
+        if (confirm('Réinitialiser tous les statuts de vaccination?')) {
+            vaccines.forEach(v => v.completed = false);
+            renderTimeline();
+            await saveToServer(); // Save to server
+            showAlert('🔄 Protocole réinitialisé');
+        }
+    }
+
+    function saveProtocol() {
+        if (!isUnlocked) return;
+        saveToServer();
+    }
+
+    function printProtocol() {
+    // Store original styles to restore later
+    const originalStyles = {
+        bodyWidth: document.body.style.width,
+        bodyMargin: document.body.style.margin,
+        bodyPadding: document.body.style.padding,
+        containerWidth: document.querySelector('.container').style.width,
+        protocolContainerWidth: document.querySelector('.protocol-container').style.width
+    };
+    
+    // Apply print styles
+    document.body.style.width = '100%';
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    
+    const container = document.querySelector('.container');
+    container.style.width = '100%';
+    container.style.maxWidth = 'none';
+    
+    const protocolContainer = document.querySelector('.protocol-container');
+    protocolContainer.style.width = '100%';
+    protocolContainer.style.maxWidth = 'none';
+    protocolContainer.style.margin = '0';
+    protocolContainer.style.padding = '20px';
+    
+    // Hide unnecessary elements for printing
+    const elementsToHide = [
+        '.password-protection',
+        '.toolbar',
+        '.stats-bar',
+        '.protocol-management',
+        '.search-container',
+        '.action-buttons',
+        '.table-legend'
+    ];
+    
+    const hiddenElements = [];
+    elementsToHide.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+            if (element.style.display !== 'none') {
+                hiddenElements.push({ element, originalDisplay: element.style.display });
+                element.style.display = 'none';
+            }
+        });
+    });
+    
+    // Hide action column in table
+    const table = document.querySelector('.vaccine-table');
+    if (table) {
+        const headerCells = table.querySelectorAll('th');
+        const rows = table.querySelectorAll('tr');
+        
+        // Store original styles
+        const originalHeaderStyles = [];
+        const originalCellStyles = [];
+        
+        // Hide last column (actions)
+        if (headerCells.length > 0) {
+            originalHeaderStyles.push({
+                element: headerCells[headerCells.length - 1],
+                originalDisplay: headerCells[headerCells.length - 1].style.display
+            });
+            headerCells[headerCells.length - 1].style.display = 'none';
+        }
+        
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length > 0) {
+                originalCellStyles.push({
+                    element: cells[cells.length - 1],
+                    originalDisplay: cells[cells.length - 1].style.display
+                });
+                cells[cells.length - 1].style.display = 'none';
+            }
+        });
+        
+        // Store for restoration
+        hiddenElements.push({ 
+            type: 'tableCells', 
+            headers: originalHeaderStyles, 
+            cells: originalCellStyles 
+        });
+    }
+    
+    // Ensure protocol info is visible and styled for print
+    const protocolInfo = document.querySelector('.protocol-info');
+    if (protocolInfo) {
+        protocolInfo.style.display = 'flex';
+        protocolInfo.style.background = '#f8f9fa';
+        protocolInfo.style.borderLeft = '5px solid #667eea';
+        protocolInfo.style.marginBottom = '20px';
+    }
+    
+    // Add print-specific styles
+    const printStyles = document.createElement('style');
+    printStyles.innerHTML = `
+        @media print {
+            body {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 10px !important;
+                background: white !important;
+                font-size: 12px !important;
+            }
+            
+            .container {
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            .protocol-container {
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 15px !important;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                background: white !important;
+            }
+            
+            .vaccine-table {
+                width: 100% !important;
+                font-size: 10px !important;
+            }
+            
+            .vaccine-table th,
+            .vaccine-table td {
+                padding: 6px 4px !important;
+            }
+            
+            .age-cell {
+                font-size: 14px !important;
+            }
+            
+            .week-cell {
+                font-size: 12px !important;
+            }
+            
+            /* Hide elements in print */
+            .toolbar,
+            .stats-bar,
+            .protocol-management,
+            .search-container,
+            .action-buttons,
+            .table-legend,
+            .vaccine-table th:last-child,
+            .vaccine-table td:last-child {
+                display: none !important;
+            }
+            
+            /* Protocol info styling for print */
+            .protocol-info {
+                display: flex !important;
+                background: #f8f9fa !important;
+                border-left: 5px solid #667eea !important;
+                margin-bottom: 15px !important;
+                padding: 15px !important;
+            }
+            
+            .protocol-info-item strong {
+                color: #667eea !important;
+            }
+            
+            .protocol-info-item span {
+                color: #333 !important;
+            }
+            
+            /* Page breaks */
+            .vaccine-table {
+                page-break-inside: auto;
+            }
+            
+            .vaccine-table tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+        }
+    `;
+    document.head.appendChild(printStyles);
+    
+    // Trigger print
+    window.print();
+    
+    // Restore original styles after a short delay
+    setTimeout(() => {
+        // Remove print styles
+        document.head.removeChild(printStyles);
+        
+        // Restore body styles
+        document.body.style.width = originalStyles.bodyWidth;
+        document.body.style.margin = originalStyles.bodyMargin;
+        document.body.style.padding = originalStyles.bodyPadding;
+        
+        // Restore container styles
+        container.style.width = originalStyles.containerWidth;
+        container.style.maxWidth = '';
+        
+        // Restore protocol container styles
+        protocolContainer.style.width = originalStyles.protocolContainerWidth;
+        protocolContainer.style.maxWidth = '';
+        protocolContainer.style.margin = '';
+        protocolContainer.style.padding = '';
+        
+        // Restore hidden elements
+        hiddenElements.forEach(item => {
+            if (item.type === 'tableCells') {
+                // Restore table cells
+                item.headers.forEach(header => {
+                    header.element.style.display = header.originalDisplay;
+                });
+                item.cells.forEach(cell => {
+                    cell.element.style.display = cell.originalDisplay;
+                });
+            } else {
+                // Restore other elements
+                item.element.style.display = item.originalDisplay;
+            }
+        });
+        
+        // Restore protocol info styles
+        if (protocolInfo) {
+            protocolInfo.style.background = '';
+            protocolInfo.style.borderLeft = '';
+            protocolInfo.style.marginBottom = '';
+        }
+        
+    }, 500);
+    
+    showAlert('🖨️ Impression lancée');
+}
+
+function exportToPDF() {
+    showAlert('Génération du PDF en cours...', 'warning');
+    
+    // Create a temporary container for PDF export
+    const tempContainer = document.createElement('div');
+    tempContainer.style.position = 'absolute';
+    tempContainer.style.left = '-9999px';
+    tempContainer.style.top = '0';
+    tempContainer.style.width = '100%'; // Fixed width for consistent scaling
+	tempContainer.style.background = isDarkMode ? '#34495e' : '#ffffff';
+    tempContainer.style.padding = '20px';
+    tempContainer.classList.add('pdf-export');
+    
+    // Clone the protocol container
+    const originalElement = document.querySelector('.protocol-container');
+    const elementClone = originalElement.cloneNode(true);
+    
+    // Remove search container
+    const searchContainer = elementClone.querySelector('.search-container');
+    if (searchContainer) {
+        searchContainer.remove();
+    }
+    
+    // Remove action column from table
+    const table = elementClone.querySelector('.vaccine-table');
+    if (table) {
+        const headerRow = table.querySelector('thead tr');
+        const headerCells = headerRow.querySelectorAll('th');
+        headerCells[headerCells.length - 1].remove(); // Remove last header (actions)
+        
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            cells[cells.length - 1].remove(); // Remove last cell (actions)
+        });
+    }
+    
+    // Add protocol info at the top
+    const protocol = protocols[currentProtocol];
+    const protocolInfoHTML = `
+        
+    `;
+    
+    elementClone.insertAdjacentHTML('afterbegin', protocolInfoHTML);
+    
+    tempContainer.appendChild(elementClone);
+    document.body.appendChild(tempContainer);
+    
+    html2canvas(tempContainer, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: isDarkMode ? '#34495e' : '#ffffff',
+        width: tempContainer.offsetWidth,
+        height: tempContainer.offsetHeight,
+        windowWidth: tempContainer.scrollWidth,
+        windowHeight: tempContainer.scrollHeight
+    }).then(canvas => {
+        // Remove temporary container
+        document.body.removeChild(tempContainer);
+        
+        const { jsPDF } = window.jspdf;
+        const imgData = canvas.toDataURL('image/png');
+        
+        // Calculate dimensions for single page
+        const pdf = new jsPDF('l', 'mm', 'a4'); // Landscape A4
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        
+        // Calculate scaling to fit the content on one page
+        const imgWidth = pageWidth - 20; // 10mm margins on each side
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        // If content is too tall, scale it down to fit
+        let finalWidth = imgWidth;
+        let finalHeight = imgHeight;
+        
+        if (imgHeight > pageHeight - 20) {
+            // Scale down to fit height
+            finalHeight = pageHeight - 20;
+            finalWidth = (canvas.width * finalHeight) / canvas.height;
+        }
+        
+        // Center the image on the page
+        const x = (pageWidth - finalWidth) / 2;
+        const y = (pageHeight - finalHeight) / 2;
+        
+        pdf.addImage(imgData, 'PNG', x, y, finalWidth, finalHeight);
+        
+        pdf.save(`${protocol.name.replace(/[^a-z0-9]/gi, '_')}_${new Date().toISOString().split('T')[0]}.pdf`);
+        showAlert('✓ PDF téléchargé avec succès!');
+    }).catch(err => {
+        console.error('Erreur PDF:', err);
+        document.body.removeChild(tempContainer);
+        showAlert('❌ Erreur lors de la génération du PDF', 'error');
+    });
+}
+
+    function toggleDarkMode() {
+        isDarkMode = !isDarkMode;
+        document.body.classList.toggle('dark-mode', isDarkMode);
+        localStorage.setItem('darkMode', isDarkMode);
+        
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.textContent = isDarkMode ? '☀️ Mode Clair' : '🌙 Mode Sombre';
+        
+        showAlert(isDarkMode ? 'Mode sombre activé' : 'Mode clair activé');
+    }
+
+    function setupSorting() {
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.addEventListener('click', () => {
+                const field = header.getAttribute('data-sort');
+                
+                if (currentSort.field === field) {
+                    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSort.field = field;
+                    currentSort.direction = 'asc';
+                }
+                
+                renderTimeline();
+            });
+        });
+    }
+
+    function setupImagePreview() {
+        document.getElementById('vaccineImage').addEventListener('change', function() {
+            const file = this.files[0];
+            const preview = document.getElementById('imagePreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.add('show');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.classList.remove('show');
+            }
+        });
+    }
+
+    // Initialisation
+    async function init() {
+    // Charger automatiquement les protocoles depuis le serveur
+    if (!await loadFromServer()) {
+        // Si aucun protocole sauvegardé, initialiser avec les données par défaut
+        initializeDefaultData();
+        await saveToServer();
+    }
+    
+    // Afficher la protection par mot de passe au démarrage
+    document.getElementById('passwordProtection').style.display = 'flex';
+    document.getElementById('mainContent').style.display = 'none';
+    
+    // Appliquer le mode sombre si activé
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.getElementById('darkModeToggle').textContent = '☀️ Mode Clair';
+    }
+    
+    // Configurer les écouteurs d'événements
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        searchTerm = e.target.value;
+        renderTimeline();
+    });
+    
+    document.getElementById('statusFilter').addEventListener('change', (e) => {
+        statusFilter = e.target.value;
+        renderTimeline();
+    });
+    
+    document.getElementById('sortSelect').addEventListener('change', (e) => {
+        currentSort.field = e.target.value;
+        currentSort.direction = 'asc';
+        renderTimeline();
+    });
+    
+    document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+    
+    // Permettre la soumission du mot de passe avec la touche Entrée
+    document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            checkPassword();
+        }
+    });
+    
+    // Configurer le tri
+    setupSorting();
+    
+    // Configurer l'aperçu d'image
+    setupImagePreview();
+    
+    // Rendre la timeline IMMÉDIATEMENT (même en mode verrouillé)
+    renderTimeline();
+    updateProtocolSelector();
+    updateProtocolInfoDisplay(); // Add this line
+    
+    // Afficher un message indiquant que les données sont chargées
+    console.log('📂 Protocoles chargés depuis le serveur');
+}
+
+    // Lancer l'initialisation au chargement
+    document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
